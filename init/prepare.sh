@@ -20,11 +20,13 @@ fi
 yum groupinstall -y 'Development tools'
 
 # build tool
-#pushd $SOURCE_DIR/
-#    ./configure --prefix=$BUILD_DIR
-#    make
-#    make install
-#popd 
+pushd $SOURCE_DIR/echo
+    cmake .
+    make
+popd 
+
+mkdir -p $BUILD_DIR/bin/
+cp $SOURCE_DIR/echo/bin/mecho $BUILD_DIR/bin/
 
 # NOTE: copy any files needed by the installed package
 cp -r $SOURCE_DIR/init           $BUILD_DIR/
