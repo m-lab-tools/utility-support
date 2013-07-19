@@ -21,3 +21,7 @@ yum groupinstall -y 'Development tools'
 
 # NOTE: copy any files needed by the installed package
 cp -r $SOURCE_DIR/init           $BUILD_DIR/
+
+cat <<\EOF > $BUILD_DIR/conf/config.sh
+RSYNCDIR_FATHOM=/var/spool/fathom
+EOF
