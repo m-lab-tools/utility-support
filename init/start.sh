@@ -17,4 +17,4 @@ for port in $TCP_PORT_LIST ; do
 done
 
 echo "Starting pipeline:"
-pipeline -port=4242 -output_dir=/var/spool/$SLICENAME &
+$SLICEHOME/pipeline -port=4242 -output_dir=/var/spool/$SLICENAME &

@@ -41,4 +41,5 @@ install -D -m 0755 $SOURCE_DIR/pipeline $BUILD_DIR/pipeline
 install -D -m 0755 $SOURCE_DIR/init/initialize.sh $BUILD_DIR/init/initialize.sh
 install -D -m 0755 $SOURCE_DIR/init/start.sh $BUILD_DIR/init/start.sh
 install -D -m 0755 $SOURCE_DIR/init/stop.sh $BUILD_DIR/init/stop.sh
-install -D -m 0755 $SOURCE_DIR/init/common.sh $BUILD_DIR/init/common.sh
+install -D -m 0644 $SOURCE_DIR/init/common.sh $BUILD_DIR/init/common.sh
+install -D -m 0644 $SOURCE_DIR/conf/rsync.conf.in $BUILD_DIR/conf
