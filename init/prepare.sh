@@ -27,7 +27,7 @@ EOF
 # Set up pipeline
 GO_VERSION=go1.0.3.linux-386.tar.gz
 export GOROOT=$SOURCE_DIR/go
-export GOPATH=$SOURCE_DIR/m-lab.pipeline/standalone
+export GOPATH=$SOURCE_DIR/pipeline/standalone
 export PATH=$SOURCE_DIR/go/bin:$PATH
 
 pushd $SOURCE_DIR
