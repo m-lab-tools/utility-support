@@ -4,7 +4,7 @@ source /etc/mlab/slice-functions
 set -e
 
 # NOTE: kill the service if it is running.
-source $SLICEHOME/init/config.sh
+source $SLICEHOME/init/common.sh
 echo "Stopping servers:"
 for port in $UDP_PORT_LIST ; do
     stop_ncat $port --udp

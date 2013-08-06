@@ -19,9 +19,7 @@ fi
 # install dependencies such as development tools
 yum groupinstall -y 'Development tools'
 
-# NOTE: copy any files needed by the installed package
-cp -r $SOURCE_DIR/init           $BUILD_DIR/
-
+mkdir $BUILD_DIR/conf
 cat <<\EOF > $BUILD_DIR/conf/config.sh
 RSYNCDIR_FATHOM=fathom
 EOF
@@ -40,5 +38,8 @@ pushd $SOURCE_DIR
 popd
 
 install -D -m 0755 $SOURCE_DIR/pipeline $BUILD_DIR/pipeline
+install -D -m 0755 $SOURCE_DIR/init/initialize.sh $BUILD_DIR/init/initialize.sh
 install -D -m 0755 $SOURCE_DIR/init/start.sh $BUILD_DIR/init/start.sh
 install -D -m 0755 $SOURCE_DIR/init/stop.sh $BUILD_DIR/init/stop.sh
+install -D -m 0644 $SOURCE_DIR/init/common.sh $BUILD_DIR/init/common.sh
+install -D -m 0644 $SOURCE_DIR/conf/rsyncd.conf.in $BUILD_DIR/conf
