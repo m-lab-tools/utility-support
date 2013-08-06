@@ -12,11 +12,9 @@ source $SLICEHOME/conf/config.sh
   )
 yum update -y
 
-# TODO: start pipeline
-
 # rsync
-sed -e "s;RSYNCDIR_FATHOM;$RSYNCDIR_FATHOM;" \
+sed -e "s;RSYNCDIR_FATHOM;/var/spool/$SLICENAME/$RSYNCDIR_FATHOM;" \
   $SLICEHOME/conf/rsyncd.conf.in > /etc/rsyncd.conf
-mkdir -p $RSYNCDIR_FATHOM
-chown -R $SLICENAME:slices /var/spool/$RSYNCDIR_FATHOM
+mkdir -p /var/spool/$SLICENAME/$RSYNCDIR_FATHOM
+chown -R $SLICENAME:slices /var/spool/$SLICENAME/$RSYNCDIR_FATHOM
 service rsyncd restart

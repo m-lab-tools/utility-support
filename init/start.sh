@@ -15,3 +15,6 @@ done
 for port in $TCP_PORT_LIST ; do
     start_ncat $port 
 done
+
+echo "Starting pipeline:"
+  pipeline -port=4242 -output_dir=/var/spool/$SLICENAME
