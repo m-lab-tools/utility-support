@@ -7,7 +7,7 @@ export PATH=$PATH:$SLICEHOME/bin:$SLICEHOME/sbin
 export LD_LIBRARY_PATH=$SLICEHOME/lib:$LD_LIBRARY_PATH
 
 # NOTE: start the service if it is not already running.
-source $SLICEHOME/init/config.sh
+source $SLICEHOME/init/common.sh
 echo "Starting servers:"
 for port in $UDP_PORT_LIST ; do
     start_ncat $port --udp
@@ -17,4 +17,4 @@ for port in $TCP_PORT_LIST ; do
 done
 
 echo "Starting pipeline:"
-  pipeline -port=4242 -output_dir=/var/spool/$SLICENAME
+$SLICEHOME/pipeline -port=4242 -output_dir=/var/spool/$SLICENAME &

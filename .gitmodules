@@ -4,6 +4,6 @@
 [submodule "echo"]
 	path = echo
 	url = https://github.com/m-lab/echo.git
-[submodule "pipeline"]
-	path = pipeline
+[submodule "m-lab.pipeline"]
+	path = m-lab.pipeline
 	url = http://code.google.com/p/m-lab.pipeline
