@@ -13,6 +13,10 @@ NDT_HOSTLIST = [ "ndt.nodar.measurement-lab.org",
 def log_msg(msg):
     stdout.write("LOG\t"+msg.replace('\t', ' '))
 
+def data_msg(msg):
+    log_msg("REPLY: "+msg)
+    stdout.write("DATA\t"+msg)
+
 def query_to_dict(query_str):
     fields = query_str.split("\t")
     ret = {}
@@ -33,7 +37,42 @@ def query_to_dict(query_str):
     ret['remote_ip'] = ip
     return ret
 
-def handle_mlabns_lookup(query):
+def soa_record(query):
+    """ Formats an SOA record using fields in 'query' and global values.
+    Return string is suitable for printing in a 'DATA' reply to pdns.
+
+    Example (split across two lines for clarity):
+        ndt.iupui.nodar.measurement-lab.org IN SOA 60 -1 localhost. \\
+            support.measurementlab.net. 2013092700 1800 3600 604800 3600\\n
+
+    TODO: these values are like DONAR, but confirm that the fields make sense.
+    """
+    reply  = "%(name)s\t"
+    reply += "%(class)s\t"
+    reply += "SOA\t"
+    reply += "60\t"
+    reply += "-1\t"
+    reply += "localhost. "
+    reply += "support.measurementlab.net. "
+    reply += "2013092700 1800 3600 604800 3600\n"
+    return reply % query
+
+def a_record(query, ipaddr):
+    """ Formats an A record using fields in 'query' and ipaddr, suitable for
+    printing in a 'DATA' reply to pdns.
+
+    Example:
+        ndt.iupui.nodar.measurement-lab.org IN A 60 -1 192.168.1.2\\n
+    """
+    reply  = "%(name)s\t"
+    reply += "%(class)s\t"
+    reply += "A\t"
+    reply += "60\t"
+    reply += "%(id)s\t"
+    reply += ipaddr+"\n"
+    return reply % query
+
+def mlabns_a_record(query):
     """ issue lookup to mlab-ns with given 'remote_ip' in 'query' """
     try:
         url = 'http://ns.measurementlab.net/ndt?ip=%s' % query['remote_ip']
@@ -44,12 +83,14 @@ def handle_mlabns_lookup(query):
         return
  
     ns_resp = json.load(resp)
-    query['ndt_ip'] = ns_resp['ip'][0]
-
-    reply = "DATA\t%(name)s\t%(class)s\tA\t60\t%(id)s\t%(ndt_ip)s\n"
-    reply = reply % query
-    log_msg(reply)
-    stdout.write(reply)
+    if 'ip' not in ns_resp or len(ns_resp['ip']) == 0:
+        msg = "mlab-ns response missing 'ip' field: %s\n" % ns_resp
+        log_msg(msg)
+        return
+        
+    # TODO: if len > 1, return all. Are multiple IPs supported by mlab-ns?
+    ndt_ip = ns_resp['ip'][0]
+    return a_record(query, ndt_ip)
 
 def main():
     # HANDSHAKE
@@ -65,23 +106,22 @@ def main():
 
     # PROCESS QUERIES
     while True:
-        query_str = stdin.readline().strip()
-        log_msg("RECEIVED: %s\n" % query_str)
+        query_str = stdin.readline()
+        if query_str == "": break # EOF
+
+        query_str = query_str.strip()
         query = query_to_dict(query_str)
+        log_msg("INPUT: %s\n" % query_str)
+
+        # NOTE: if this is a valid query, for a name we support.
         if (query is not None and query['kind'] == "Q" and
             query['name'] in NDT_HOSTLIST):
 
-            # NOTE: the name requested is one we support.
             if query['type']=="SOA":
-                reply  = "DATA\t%(name)s\t%(class)s\tSOA\t60\t-1\tlocalhost. "
-                reply += "support.measurementlab.net. "
-                reply += "2008080300 1800 3600 604800 3600\n" 
-                reply = reply % query
-                log_msg(reply)
-                stdout.write(reply)
+                data_msg(soa_record(query))
             elif query['type'] in [ "ANY", "A" ]:
-                handle_mlabns_lookup(query)
-                handle_mlabns_lookup(query)
+                data_msg(mlabns_a_record(query))
+                data_msg(mlabns_a_record(query))
 
         stdout.write("END\n")
         stdout.flush()
