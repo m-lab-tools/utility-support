@@ -3,14 +3,23 @@
 source /etc/mlab/slice-functions
 source $SLICEHOME/conf/config.sh
 
+set -e
+
 # NOTE: update configuration specific to this node.
-[ -f $SLICEHOME/.yumdone ] || \
-  (
-    rm -f $SLICEHOME/.yumdone
-    yum install -y nmap
+if ! test -f $SLICEHOME/.yumdone ; then 
+    yum install -y nmap pdns pdns-backend-pipe bind-utils
+    # NOTE: if there was an error installing, 'set -e' would stop us.
+    # NOTE: so signal success.
     touch $SLICEHOME/.yumdone
-  )
+fi
 yum update -y
+
+# setup pdns 
+cp /etc/pdns/pdns.conf /etc/pdns/pdns.conf.bak
+cp $SLICEHOME/conf/pdns.conf /etc/pdns/pdns.conf
+cp $SLICEHOME/resolve-by-mlabns.py /usr/sbin/
+chkconfig pdns on
+service pdns start
 
 # rsync
 sed -e "s;RSYNCDIR_FATHOM;/var/spool/$SLICENAME/$RSYNCDIR_FATHOM;" \
