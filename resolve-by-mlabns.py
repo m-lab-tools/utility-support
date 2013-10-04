@@ -24,8 +24,7 @@ RECORD_TTL=60
 LOCAL_HOSTNAME=socket.gethostname()
 
 # NOTE: could add metro
-NDT_HOSTLIST = [ "ndt.nodar.measurement-lab.org", 
-                 "ndt.iupui.nodar.measurement-lab.org" ]
+NDT_HOSTLIST = [ "ndt.iupui.nodar.measurement-lab.org" ]
 
 def log_msg(msg):
     if msg is None: return
