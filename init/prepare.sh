@@ -43,3 +43,5 @@ install -D -m 0755 $SOURCE_DIR/init/start.sh $BUILD_DIR/init/start.sh
 install -D -m 0755 $SOURCE_DIR/init/stop.sh $BUILD_DIR/init/stop.sh
 install -D -m 0644 $SOURCE_DIR/init/common.sh $BUILD_DIR/init/common.sh
 install -D -m 0644 $SOURCE_DIR/conf/rsyncd.conf.in $BUILD_DIR/conf
+install -D -m 0644 $SOURCE_DIR/conf/pdns.conf $BUILD_DIR/conf
+install -D -m 0755 $SOURCE_DIR/resolve-by-mlabns.py $BUILD_DIR/
