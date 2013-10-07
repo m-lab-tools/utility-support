@@ -20,11 +20,12 @@ from sys import stdin, stdout, exit
 import time
 import urllib2
 
-RECORD_TTL=60
+RECORD_TTL=300
 LOCAL_HOSTNAME=socket.gethostname()
 
 # NOTE: could add metro
-NDT_HOSTLIST = [ "ndt.iupui.nodar.measurement-lab.org" ]
+DOMAIN = "donar.measurement-lab.org"
+NDT_HOSTLIST = [ "ndt.iupui."+DOMAIN ]
 
 def log_msg(msg):
     if msg is None: return
@@ -66,7 +67,7 @@ def soa_record(query):
 
     TODO: these values are like DONAR, but confirm that the fields make sense.
     """
-    reply  = "%(name)s\t"
+    reply  = DOMAIN+".\t"
     reply += "%(class)s\t"
     reply += "SOA\t"
     reply += "%(ttl)s\t"
