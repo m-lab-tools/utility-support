@@ -1,0 +1,13 @@
+mlab1.lhr01.measurement-lab.org
+mlab1.par01.measurement-lab.org
+mlab1.lax01.measurement-lab.org
+mlab1.lga01.measurement-lab.org
+mlab1.syd01.measurement-lab.org
+mlab1.tpe01.measurement-lab.org
+mlab1.nuq0t.measurement-lab.org
+mlab2.nuq0t.measurement-lab.org
+mlab3.nuq0t.measurement-lab.org
+mlab4.nuq0t.measurement-lab.org
+mlab4.nuq01.measurement-lab.org
+mlab4.nuq02.measurement-lab.org
+mlab4.prg01.measurement-lab.org
