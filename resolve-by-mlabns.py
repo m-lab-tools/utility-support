@@ -95,12 +95,14 @@ def a_record(query, ipaddr):
 def mlabns_a_record(query):
     """ issue lookup to mlab-ns with given 'remote_ip' in 'query' """
     try:
-        url = 'http://ns.measurementlab.net/ndt?ip=%s' % query['remote_ip']
+        url_fmt = 'http://ns.measurementlab.net/ndt?ip=%s&format=json' 
+        url = url_fmt % query['remote_ip']
         request = urllib2.Request(url)
         request.add_header('User-Agent','nodar/1.0 from '+LOCAL_HOSTNAME)
         resp = urllib2.build_opener().open(request)
     except:
-        msg = "Exception during query for /ndt?ip=%s : %s\n" % (ip, str(e))
+        msg_fmt = "Exception during query for /ndt?ip=%s&format=json : %s\n"
+        msg = msg_fmt % (ip, str(e))
         log_msg(msg)
         return None
  
