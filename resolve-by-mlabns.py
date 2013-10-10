@@ -25,7 +25,7 @@ LOCAL_HOSTNAME=socket.gethostname()
 
 # NOTE: could add metro
 DOMAIN = "donar.measurement-lab.org"
-NDT_HOSTLIST = [ "ndt.iupui."+DOMAIN ]
+NDT_HOSTLIST = [ "ndt.iupui."+DOMAIN, DOMAIN ]
 
 def log_msg(msg):
     if msg is None: return
@@ -62,7 +62,7 @@ def soa_record(query):
     Return string is suitable for printing in a 'DATA' reply to pdns.
 
     Example (split across two lines for clarity):
-        ndt.iupui.nodar.measurement-lab.org IN SOA 60 -1 localhost. 
+        ndt.iupui.donar.measurement-lab.org IN SOA 60 -1 localhost. 
             support.measurementlab.net. 2013092700 1800 3600 604800 3600\\n
 
     TODO: these values are like DONAR, but confirm that the fields make sense.
@@ -82,7 +82,7 @@ def a_record(query, ipaddr):
     printing in a 'DATA' reply to pdns.
 
     Example:
-        ndt.iupui.nodar.measurement-lab.org IN A 60 -1 192.168.1.2\\n
+        ndt.iupui.donar.measurement-lab.org IN A 60 -1 192.168.1.2\\n
     """
     reply  = "%(name)s\t"
     reply += "%(class)s\t"
@@ -114,6 +114,46 @@ def mlabns_a_record(query):
     ndt_ip = ns_resp['ip'][0]
     return a_record(query, ndt_ip)
 
+def ns_record(query, host):
+    """ Formats an NS record using fields in 'query' and global values.
+    Return string is suitable for printing in a 'DATA' reply to pdns.
+
+    Example:
+        donar.measurement-lab.org IN NS 300 -1 <various hostnames>\\n
+    """
+    reply  = DOMAIN+"\t"
+    reply += "%(class)s\t"
+    reply += "NS\t"
+    reply += "%(ttl)s\t"
+    reply += "%(id)s\t"
+    reply += host+"\n"
+    return reply % query
+
+def handle_ns_records(query):
+    """ Hints for sub-zone NS records are provided on the parent zone.  In our
+    case, measurement-lab.org includes NS records for donar.measurement-lab.org
+    that point to nodar servers running in slices.
+
+    However, the authoritative NS records should be served by the sub-zone.
+    This function handles parsing the config file in /etc/donar.txt and
+    generating NS replies for donar.measurement-lab.org
+    """
+    # TODO: need better way to keep ns records consistent across zone-cuts
+    # TODO: from measurement-lab.org zone to each nodar server.
+    try:
+        DONAR_HOSTS="/etc/donar.txt"
+        host_list = open(DONAR_HOSTS, 'r').readlines()
+    except:
+        log_msg("Failed to open: %s\n" % DONAR_HOSTS)
+        return
+
+    try:
+        # NOTE: use up to six hosts (shorter is ok)
+        for host in host_list[:6]:
+            data_msg(ns_record(query, "utility.mlab."+host.strip()))
+    except:
+        log_msg("Failed on: %s\n" % query)
+
 def main():
     # HANDSHAKE with pdns
     while True:
@@ -141,9 +181,11 @@ def main():
 
             if query['type']=="SOA":
                 data_msg(soa_record(query))
-            elif query['type'] in [ "ANY", "A" ]:
+            if query['type'] in [ "ANY", "A" ]:
                 data_msg(mlabns_a_record(query))
                 data_msg(mlabns_a_record(query))
+            if query['type'] in [ "ANY", "NS" ]:
+                handle_ns_records(query)
 
         stdout.write("END\n")
         stdout.flush()
