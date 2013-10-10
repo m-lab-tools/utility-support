@@ -119,7 +119,7 @@ def ns_record(query, host):
     Return string is suitable for printing in a 'DATA' reply to pdns.
 
     Example:
-        donar.measurement-lab.org IN NS 300 -1 <various hostnames>\\n
+        donar.measurement-lab.org IN NS 300 -1 <host>\\n
     """
     reply  = DOMAIN+"\t"
     reply += "%(class)s\t"
