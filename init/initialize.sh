@@ -27,6 +27,7 @@ if test x"$ENABLE_DONAR" = x"yes" ; then
     # setup pdns 
     cp /etc/pdns/pdns.conf /etc/pdns/pdns.conf.bak
     cp $SLICEHOME/conf/pdns.conf /etc/pdns/pdns.conf
+    cp $SLICEHOME/conf/donar.txt /etc/donar.txt
     cp $SLICEHOME/resolve-by-mlabns.py /usr/sbin/
     chkconfig pdns on
     service pdns start
