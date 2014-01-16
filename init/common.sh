@@ -20,7 +20,8 @@ function rotate_log () {
 
 function ncat_command () {
     local port=$1
-    local extra_args=$2
+    shift
+    local extra_args=$*
 
     CMD="ncat -l $port $NCAT_OPTIONS"
     if test -n "$extra_args" ; then
@@ -29,29 +30,73 @@ function ncat_command () {
     echo $CMD
 }
 
-function start_ncat () {
-    local port=$1
-    local extra_args=$2
-    LOG=$LOGFILE.tcp.$port.log
-
-    CMD=$( ncat_command $port $extra_args )
+function start_cmd() {
     if ! pgrep -f "$CMD" &> /dev/null ; then
         rotate_log ${LOG}
+        echo starting: $CMD
         $CMD &> ${LOG} &
     else
         echo NOT starting: $CMD
-    fi   
+    fi
 }
 
-function stop_ncat () {
-    local port=$1
-    local extra_args=$2
-    LOG=$LOGFILE.udp.$port.log
+function start_ncat_tcp4() {
+  local port=$1
+  LOG=$LOGFILE.tcp.v4.$port.log
+  CMD=$( ncat_command $port -4 )
+  start_cmd
+}
 
-    CMD=$( ncat_command $port $extra_args )
+function start_ncat_tcp6() {
+  local port=$1
+  LOG=$LOGFILE.tcp.v6.$port.log
+  CMD=$( ncat_command $port -6 )
+  start_cmd
+}
+
+function start_ncat_udp4() {
+  local port=$1
+  LOG=$LOGFILE.udp.v4.$port.log
+  CMD=$( ncat_command $port -u -4 )
+  start_cmd
+}
+
+function start_ncat_udp6() {
+  local port=$1
+  LOG=$LOGFILE.udp.v6.$port.log
+  CMD=$( ncat_command $port -u -6 )
+  start_cmd
+}
+
+function stop_cmd() {
     if pgrep -f "$CMD" &> /dev/null ; then
+        echo stopping: $CMD
         pkill -KILL -f "$CMD"
     else
         echo NOT killing: $CMD
     fi
+}
+
+function stop_ncat_tcp4() {
+  local port=$1
+  CMD=$( ncat_command $port -4 )
+  stop_cmd
+}
+
+function stop_ncat_tcp6() {
+  local port=$1
+  CMD=$( ncat_command $port -6 )
+  stop_cmd
+}
+
+function stop_ncat_udp4() {
+  local port=$1
+  CMD=$( ncat_command $port -u -4 )
+  stop_cmd
+}
+
+function stop_ncat_udp6() {
+  local port=$1
+  CMD=$( ncat_command $port -u -6 )
+  stop_cmd
 }
