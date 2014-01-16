@@ -40,15 +40,6 @@ function start_cmd() {
     fi
 }
 
-function stop_cmd() {
-    if pgrep -f "$CMD" &> /dev/null ; then
-        echo stopping: $CMD
-        pkill -KILL -f "$CMD"
-    else
-        echo NOT killing: $CMD
-    fi
-}
-
 function start_ncat_tcp4() {
   local port=$1
   LOG=$LOGFILE.tcp.v4.$port.log
@@ -75,4 +66,37 @@ function start_ncat_udp6() {
   LOG=$LOGFILE.udp.v6.$port.log
   CMD=$( ncat_command $port -u -6 )
   start_cmd
+}
+
+function stop_cmd() {
+    if pgrep -f "$CMD" &> /dev/null ; then
+        echo stopping: $CMD
+        pkill -KILL -f "$CMD"
+    else
+        echo NOT killing: $CMD
+    fi
+}
+
+function stop_ncat_tcp4() {
+  local port=$1
+  CMD=$( ncat_command $port -4 )
+  stop_cmd
+}
+
+function stop_ncat_tcp6() {
+  local port=$1
+  CMD=$( ncat_command $port -6 )
+  stop_cmd
+}
+
+function stop_ncat_udp4() {
+  local port=$1
+  CMD=$( ncat_command $port -u -4 )
+  stop_cmd
+}
+
+function stop_ncat_udp6() {
+  local port=$1
+  CMD=$( ncat_command $port -u -6 )
+  stop_cmd
 }
