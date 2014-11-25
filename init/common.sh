@@ -21,10 +21,14 @@ function rotate_log () {
 function ncat_command () {
     local port=$1
     local extra_args=$2
+    local ipv6_support=''
+    ping6 -c1 ks.measurementlab.net
+    if [ $? -ne 0]; then
+        ipv6_support='-6'
 
-    CMD="ncat -l $port $NCAT_OPTIONS"
+    CMD="ncat $ipv6_support -l $port $NCAT_OPTIONS"
     if test -n "$extra_args" ; then
-        CMD="ncat $extra_args -l $port $NCAT_OPTIONS"
+        CMD="ncat $ipv6_support $extra_args -l $port $NCAT_OPTIONS"
     fi
     echo $CMD
 }
