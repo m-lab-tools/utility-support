@@ -16,5 +16,7 @@ for port in $TCP_PORT_LIST ; do
     start_ncat $port 
 done
 
-echo "Starting pipeline:"
-$SLICEHOME/pipeline -port=4242 -output_dir=/var/spool/$SLICENAME &
+# DISABLED until we have the resources to restart development on the prototype
+# of the "push" data collection pipeline apparatus (which is what this is)
+#echo "Starting pipeline:"
+#$SLICEHOME/pipeline -port=4242 -output_dir=/var/spool/$SLICENAME &
