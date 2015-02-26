@@ -23,7 +23,7 @@ function ncat_command () {
     local extra_args=$2
     local ipv6_support=''
 
-    ping6 -c1 ks.measurementlab.net && NCAT_OPTIONS="-6 $NCAT_OPTIONS"
+    ping6 -c1 ks.measurementlab.net &> /dev/null && NCAT_OPTIONS="-6 $NCAT_OPTIONS"
     CMD="ncat -l $port $NCAT_OPTIONS"
     if test -n "$extra_args" ; then
         CMD="ncat $extra_args -l $port $NCAT_OPTIONS"
