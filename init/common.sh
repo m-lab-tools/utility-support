@@ -6,7 +6,7 @@
 
 # NOTE: minimal viable list for fathom
 UDP_PORT_LIST=
-TCP_PORT_LIST="143 80"
+TCP_PORT_LIST=
 
 # TODO: find a more suitable binary than 'ncat' and 'cat'
 NCAT_OPTIONS="--verbose --max-conns 10 --keep-open --exec /bin/cat"
