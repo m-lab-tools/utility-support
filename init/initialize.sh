@@ -33,9 +33,15 @@ if test x"$ENABLE_DONAR" = x"yes" ; then
     service pdns start
 fi
 
-# rsync
+# NOTE: This is overwriting a pre-existing rsyncd.conf from the slicebase.
 sed -e "s;RSYNCDIR_FATHOM;/var/spool/$SLICENAME/$RSYNCDIR_FATHOM;" \
-  $SLICEHOME/conf/rsyncd.conf.in > /etc/rsyncd.conf
+    -e "s;RSYNCDIR_UTILIZATION;/var/spool/$SLICENAME/$RSYNCDIR_UTILIZATION;" \
+    $SLICEHOME/conf/rsyncd.conf.in > /etc/rsyncd.conf
+
 mkdir -p /var/spool/$SLICENAME/$RSYNCDIR_FATHOM
+mkdir -p /var/spool/$SLICENAME/$RSYNCDIR_UTILIZATION
+
 chown -R $SLICENAME:slices /var/spool/$SLICENAME/$RSYNCDIR_FATHOM
+chown -R $SLICENAME:slices /var/spool/$SLICENAME/$RSYNCDIR_UTILIZATION
+
 service rsyncd restart
