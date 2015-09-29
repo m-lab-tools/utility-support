@@ -15,7 +15,7 @@ if ! test -f $SLICEHOME/.yumdone ; then
     if test x"$ENABLE_DONAR" = x"yes" ; then
         yum install -y nmap pdns pdns-backend-pipe bind-utils
     else
-        yum install -y nmap 
+        yum install -y nmap collectd-mlab
     fi
     # NOTE: if there was an error installing, 'set -e' would stop us.
     # NOTE: so signal success.
