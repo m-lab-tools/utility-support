@@ -10,3 +10,12 @@ port=7999
   transfer logging = no
   ignore errors = no
   ignore nonreadable = yes
+
+[utilization]
+  comment = Resource utilization metrics
+  path = RSYNCDIR_UTILIZATION
+  list = yes
+  read only = yes
+  transfer logging = no
+  ignore errors = no
+  ignore nonreadable = yes
