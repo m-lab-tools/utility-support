@@ -10,13 +10,16 @@ if grep -q $HOSTNAME $SLICEHOME/conf/donar.txt ; then
     ENABLE_DONAR="yes"
 fi
 
+PACKAGES="nmap collectd-mlab"
+
 # NOTE: update configuration specific to this node.
 if ! test -f $SLICEHOME/.yumdone ; then 
     if test x"$ENABLE_DONAR" = x"yes" ; then
-        yum install -y nmap pdns pdns-backend-pipe bind-utils
-    else
-        yum install -y nmap collectd-mlab
+        PACKAGES="${PACKAGES} pdns pdns-backend-pipe bind-utils"
     fi
+
+    yum install -y $PACKAGES
+
     # NOTE: if there was an error installing, 'set -e' would stop us.
     # NOTE: so signal success.
     touch $SLICEHOME/.yumdone
