@@ -23,6 +23,7 @@ mkdir $BUILD_DIR/conf
 cat <<\EOF > $BUILD_DIR/conf/config.sh
 RSYNCDIR_FATHOM=fathom
 RSYNCDIR_UTILIZATION=utilization
+RSYNCDIR_SWITCH=switch
 EOF
 
 # Set up pipeline
