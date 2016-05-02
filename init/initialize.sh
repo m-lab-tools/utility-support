@@ -39,12 +39,15 @@ fi
 # NOTE: This is overwriting a pre-existing rsyncd.conf from the slicebase.
 sed -e "s;RSYNCDIR_FATHOM;/var/spool/$SLICENAME/$RSYNCDIR_FATHOM;" \
     -e "s;RSYNCDIR_UTILIZATION;/var/spool/$SLICENAME/$RSYNCDIR_UTILIZATION;" \
+    -e "s;RSYNCDIR_SWITCH;/var/spool/$SLICENAME/$RSYNCDIR_SWITCH;" \
     $SLICEHOME/conf/rsyncd.conf.in > /etc/rsyncd.conf
 
 mkdir -p /var/spool/$SLICENAME/$RSYNCDIR_FATHOM
 mkdir -p /var/spool/$SLICENAME/$RSYNCDIR_UTILIZATION
+mkdir -p /var/spool/$SLICENAME/$RSYNCDIR_SWITCH
 
 chown -R $SLICENAME:slices /var/spool/$SLICENAME/$RSYNCDIR_FATHOM
 chown -R $SLICENAME:slices /var/spool/$SLICENAME/$RSYNCDIR_UTILIZATION
+chown -R $SLICENAME:slices /var/spool/$SLICENAME/$RSYNCDIR_SWITCH
 
 service rsyncd restart
