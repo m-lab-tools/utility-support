@@ -15,3 +15,5 @@ done
 
 echo "Stopping pipeline:"
 killall pipeline
+
+service collectd stop
