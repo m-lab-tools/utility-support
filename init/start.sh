@@ -16,7 +16,6 @@ for port in $TCP_PORT_LIST ; do
     start_ncat $port 
 done
 
-service collectd-setup start
 service collectd start
 
 # DISABLED until we have the resources to restart development on the prototype
