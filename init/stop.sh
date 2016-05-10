@@ -13,7 +13,7 @@ for port in $TCP_PORT_LIST ; do
     stop_ncat $port 
 done
 
-echo "Stopping pipeline:"
-killall pipeline
+# echo "Stopping pipeline:"
+# killall pipeline
 
 service collectd stop
