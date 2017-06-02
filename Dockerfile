@@ -1,3 +1,6 @@
+# WARNING: Proof of concept. Many hacks in here. In particular, please do not
+# use sed to edit code in the production version. This is not okay.
+
 FROM tenforward/centos-i386
 LABEL vendor="measurement-lab" description="Docker for building 32 bit mlab slices"
 
@@ -8,7 +11,6 @@ RUN linux32 yum install -y rpm-builder rpm-build m4 python-devel openssl-devel
 
 RUN linux32 rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 RUN linux32 yum install -y sudo man
-
 
 RUN git clone --recursive https://github.com/m-lab-tools/utility-support.git
 WORKDIR /utility-support
