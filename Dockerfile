@@ -21,7 +21,7 @@ WORKDIR /
 RUN git clone --recursive https://github.com/m-lab-tools/utility-support.git
 WORKDIR /utility-support
 RUN linux32 ./package/slicebuild.sh mlab_utility
-RUN linux32 yum install -y /utility-support/build/slicebase-i386/i686/mlab_utility-master-*.mlab.i686.rpm
+RUN linux32 yum install -y /utility-support/build/slicebase-i386/i686/mlab_utility-*.i686.rpm
 WORKDIR /
 
 # Build & install the collectd-mlab slice package.
