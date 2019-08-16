@@ -13,3 +13,12 @@ We recommend building in a dedicated environment.  The build scripts
 create /home/mlab_utility_test and require root privileges to execute.
 
 There is a dependency on 'git' and the yumgroup 'Development tools'.
+
+Dockerfile
+==========
+
+To build a docker image with the utility-support experiment installed:
+
+```
+docker build -t utility-support:local .
+```
