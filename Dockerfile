@@ -12,7 +12,7 @@ RUN linux32 yum -y update
 RUN linux32 yum install -y wget git svn binutils qt gcc make patch libgomp
 RUN linux32 yum install -y glibc-headers glibc-devel kernel-headers kernel-devel htop dkms
 RUN linux32 yum install -y rpm-builder rpm-build m4 python-devel openssl-devel vim sudo man
-RUN linux32 yum install -y http://mirror.measurementlab.net/fedora-epel/6/i386/python-gflags-1.4-3.el6.noarch.rpm
+RUN linux32 yum install -y https://storage.googleapis.com/utility-support-mlab-oti/python-gflags-1.4-3.el6.noarch.rpm
 
 RUN linux32 rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
