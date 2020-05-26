@@ -1,0 +1,9 @@
+/var/log/check_collectd_mlab.log {
+    copytruncate
+    compress
+    monthly
+    notifempty
+    rotate 5
+    missingok
+}
+

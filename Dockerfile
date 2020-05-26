@@ -34,6 +34,11 @@ RUN linux32 yum install -y /build/noarch/collectd-mlab-2.0-2.noarch.rpm
 # NOTE: do not run ttys in docker; mingetty spams /var/log/messages with errors.
 RUN rm /etc/init/tty*.conf
 
+# Copy in the logrotate configuration file for the check_collectd_mlab.py
+# script log file. NOTE: check_collectd_mlab.py is part of the collectd-mlab
+# repository/package.
+COPY conf/check_collectd_mlab.logrotate /etc/logrotate.d/check-collectd-mlab
+
 # Stash environment variables and start init scripts.
 CMD echo ${COMMUNITY} > /home/mlab_utility/conf/snmp.community && \
     echo ${HOSTNAME} > /home/mlab_utility/conf/hostname && \
